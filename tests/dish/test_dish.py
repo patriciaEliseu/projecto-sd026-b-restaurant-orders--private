@@ -5,52 +5,29 @@ import pytest
 
 # Req 2
 def test_dish():
-    dish = Dish('pasta', 10.0)
-    assert dish.name == 'pasta'
-    assert dish.price == 10.0
-    assert dish.recipe == {}
+    food = Dish("hamburguer", 15.0)
+    assert food.name == "hamburguer"
+    food2 = Dish("pizza", 27.0)
+    assert food2.name != food.name
+    assert food2 != food
+    food3 = Dish("hamburguer", 15.0)
+    assert food3.name == food.name
+    assert food3 == food
+    assert hash(food) == hash(food3)
+    assert hash(food) != hash(food2)
+    food_rpr = "Dish('hamburguer', R$15.00)"
+    assert repr(food) == food_rpr
+    assert repr(food2) != food_rpr
+    item1 = Ingredient("bacon")
+    food.add_ingredient_dependency(item1, 2)
+    assert food.recipe.get(item1) == 2
+    assert food.recipe.get(item1) != 3
+    assert food.get_ingredients() == {item1}
+    needed_restrictions = {Restriction.ANIMAL_DERIVED, Restriction.ANIMAL_MEAT}
+    assert food.get_restrictions() == needed_restrictions
 
     with pytest.raises(TypeError):
-        Dish('pasta', '10.0')
+        Dish("pizza", "27.0")
 
     with pytest.raises(ValueError):
-        Dish('pasta', 0)
-
-    dish1 = Dish('pasta', 10.0)
-    dish2 = Dish('pasta', 10.0)
-    assert dish1 == dish2
-
-    assert dish != 1
-
-    dish1 = Dish('pasta', 10.0)
-    dish2 = Dish('pizza', 15.0)
-    assert dish1 != dish2
-
-    dish1 = Dish('pasta', 10.0)
-    dish2 = Dish('pasta', 10.0)
-    assert hash(dish1) == hash(dish2)
-
-    dish1 = Dish('pasta', 10.0)
-    dish2 = Dish('pizza', 15.0)
-    assert hash(dish1) != hash(dish2)
-
-    farinha = Ingredient('farinha')
-    bacon = Ingredient('bacon')
-
-    dish.add_ingredient_dependency(farinha, 2)
-    dish.add_ingredient_dependency(bacon, 3)
-
-    assert dish.recipe.get(farinha) == 2
-    assert dish.recipe.get(bacon) == 3
-    assert dish.get_ingredients() == {farinha, bacon}
-
-    assert dish.get_restrictions() == farinha.restrictions.union(bacon.restrictions)
-
-    with pytest.raises(TypeError):
-        dish.get_ingredients('InvalidArgument')
-
-        with pytest.raises(TypeError):
-            dish.get_restrictions('InvalidArgument')
-
-        dish_repr = f"Dish('{dish.name}', R${dish.price:.2f})"
-        assert dish_repr == repr(dish)
+        Dish("pizza", -27.0)
