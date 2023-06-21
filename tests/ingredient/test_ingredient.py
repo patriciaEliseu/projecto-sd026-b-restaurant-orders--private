@@ -4,19 +4,20 @@ from src.models.ingredient import Restriction
 
 # Req 1
 def test_ingredient():
-    ingredient = Ingredient('farinha')
-    assert ingredient.name == 'farinha'
+    ingredient = Ingredient("farinha")
+    assert ingredient.name == "farinha"
     assert ingredient.restrictions == {Restriction.GLUTEN}
 
-    ingredient = Ingredient('unknown_ingredient')
-    assert ingredient.name == 'unknown_ingredient'
+    ingredient = Ingredient("unknown_ingredient")
+    assert ingredient.name == "unknown_ingredient"
     assert ingredient.restrictions == set()
 
-    ingredient = Ingredient('farinha')
-    assert repr(ingredient) == 'Ingredient("farinha")'
+    ingredient = Ingredient("farinha")
+    assert repr(ingredient) == "Ingredient('farinha')"
 
     ingredient1 = Ingredient('farinha')
     ingredient2 = Ingredient('farinha')
+    assert ingredient1 == ingredient2
 
     ingredient1 = Ingredient('farinha')
     ingredient2 = Ingredient('bacon')
