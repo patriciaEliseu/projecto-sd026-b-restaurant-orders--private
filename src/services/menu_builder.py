@@ -15,8 +15,7 @@ class MenuBuilder:
     def make_order(self, dish_name: str) -> None:
         try:
             curr_dish = [
-                dish
-                for dish in self.menu_data.dishes
+                dish for dish in self.menu_data.dishes
                 if dish.name == dish_name
             ][0]
         except IndexError:
@@ -26,4 +25,17 @@ class MenuBuilder:
 
     # Req 4
     def get_main_menu(self, restriction=None) -> List[Dict]:
-        pass
+        menu = []
+
+        for dish in self.menu_data.dishes:
+            if not restriction or restriction not in dish.get_restrictions():
+                dish_entry = {
+                    "dish_name": dish.name,
+                    "ingredients": dish.get_ingredients(),
+                    "price": dish.price,
+                    "restrictions": dish.get_restrictions(),
+                }
+
+                menu.append(dish_entry)
+
+        return menu
